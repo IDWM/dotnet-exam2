@@ -1,4 +1,5 @@
 using dotnet_exam2.Src.Data;
+using dotnet_exam2.Src.Helpers;
 using dotnet_exam2.Src.Interfaces;
 using dotnet_exam2.Src.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddCors();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlite("Data Source=app.db");
