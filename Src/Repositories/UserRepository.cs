@@ -1,51 +1,73 @@
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using dotnet_exam2.Src.Data;
+using dotnet_exam2.Src.DTOs;
 using dotnet_exam2.Src.Entities;
 using dotnet_exam2.Src.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_exam2.Src.Repositories
 {
-    public class UserRepository(DataContext dataContext) : IUserRepository
+    public class UserRepository(DataContext dataContext, IMapper mapper) : IUserRepository
     {
         private readonly DataContext _dataContext = dataContext;
+        private readonly IMapper _mapper = mapper;
 
-        public async Task<User> CreateUserAsync(User user)
+        public async Task<UserResponseDto> CreateUserAsync(UserCreateDto userDto)
         {
             var gender =
-                await _dataContext.Genders.FirstOrDefaultAsync(g => g.Id == user.GenderId)
+                await _dataContext.Genders.FirstOrDefaultAsync(g => g.Id == userDto.GenderId)
                 ?? throw new InvalidOperationException(
-                    $"El género con ID {user.GenderId} no existe."
+                    $"El género con ID {userDto.GenderId} no existe."
                 );
 
             var existingUser = await _dataContext.Users.FirstOrDefaultAsync(u =>
-                u.Email == user.Email
+                u.Email == userDto.Email
             );
 
             if (existingUser != null)
+            {
                 throw new InvalidOperationException(
                     "Ya existe un usuario con este correo electrónico."
                 );
+            }
 
-            user.Gender = gender;
+            var user = new User
+            {
+                Name = userDto.Name,
+                Email = userDto.Email,
+                BirthDate = userDto.BirthDate,
+                GenderId = userDto.GenderId,
+                Gender = gender
+            };
 
             await _dataContext.Users.AddAsync(user);
             await _dataContext.SaveChangesAsync();
 
-            return user;
+            return new UserResponseDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                BirthDate = user.BirthDate,
+                Gender = new GenderDto { Id = user.Gender.Id, Name = user.Gender.Name }
+            };
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserResponseDto>> GetAllUsersAsync()
         {
             return await _dataContext
                 .Users.Include(u => u.Gender)
                 .OrderBy(u => u.Name)
+                .ProjectTo<UserResponseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
-        public async Task<User?> GetUserByIdAsync(int id)
+        public async Task<UserResponseDto?> GetUserByIdAsync(int id)
         {
             return await _dataContext
                 .Users.Include(u => u.Gender)
+                .ProjectTo<UserResponseDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
     }

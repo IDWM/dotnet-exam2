@@ -1,4 +1,4 @@
-using dotnet_exam2.Src.Entities;
+using dotnet_exam2.Src.DTOs;
 using dotnet_exam2.Src.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +11,11 @@ namespace dotnet_exam2.Src.Controllers
         private readonly IUserRepository _userRepository = userRepository;
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<UserResponseDto>> CreateUser(UserCreateDto userDto)
         {
             try
             {
-                var createdUser = await _userRepository.CreateUserAsync(user);
-
+                var createdUser = await _userRepository.CreateUserAsync(userDto);
                 return CreatedAtAction(
                     nameof(GetUserById),
                     new { id = createdUser.Id },
@@ -30,15 +29,14 @@ namespace dotnet_exam2.Src.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetAllUsers()
         {
             var users = await _userRepository.GetAllUsersAsync();
-
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        public async Task<ActionResult<UserResponseDto>> GetUserById(int id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
 
