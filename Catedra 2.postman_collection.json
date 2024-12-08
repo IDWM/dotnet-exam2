@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "65b96749-fbab-4e03-8176-9c61140709a3",
+		"name": "Catedra 2",
+		"description": "Colección de endpoints para la gestión de usuarios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25678350"
+	},
+	"item": [
+		{
+			"name": "Crear un usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Juan Perez\",\n    \"email\": \"juan.perez@example.com\",\n    \"birthDate\": \"1990-01-15\",\n    \"genderId\": 1\n}"
+				},
+				"url": {
+					"raw": "{{api}}/user",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"user"
+					]
+				},
+				"description": "Crea un nuevo usuario en el sistema"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todos los usuarios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/user",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"user"
+					]
+				},
+				"description": "Obtiene la lista de todos los usuarios registrados"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener un usuario por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/user/1",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"user",
+						"1"
+					]
+				},
+				"description": "Obtiene un usuario específico por su ID"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api",
+			"value": "http://localhost:5000/api",
+			"type": "string"
+		}
+	]
+}
