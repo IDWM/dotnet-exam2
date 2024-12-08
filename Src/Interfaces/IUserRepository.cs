@@ -4,8 +4,8 @@ namespace dotnet_exam2.Src.Interfaces
 {
     public interface IUserRepository
     {
-        Task<UserResponseDto> CreateUserAsync(UserCreateDto userDto);
-        Task<IEnumerable<UserResponseDto>> GetAllUsersAsync();
-        Task<UserResponseDto?> GetUserByIdAsync(int id);
+        Task<UserDto> CreateUserAsync(CreateUserDto userDto);
+        Task<IEnumerable<UserDto>> GetAllUsersAsync();
+        Task<UserDto?> GetUserByIdAsync(int id);
     }
 }

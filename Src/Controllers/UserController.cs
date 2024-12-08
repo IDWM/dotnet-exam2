@@ -11,7 +11,7 @@ namespace dotnet_exam2.Src.Controllers
         private readonly IUserRepository _userRepository = userRepository;
 
         [HttpPost]
-        public async Task<ActionResult<UserResponseDto>> CreateUser(UserCreateDto userDto)
+        public async Task<ActionResult<UserDto>> CreateUser(CreateUserDto userDto)
         {
             try
             {
@@ -29,14 +29,14 @@ namespace dotnet_exam2.Src.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
             var users = await _userRepository.GetAllUsersAsync();
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserResponseDto>> GetUserById(int id)
+        public async Task<ActionResult<UserDto>> GetUserById(int id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
 

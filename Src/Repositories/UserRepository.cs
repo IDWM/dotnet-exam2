@@ -13,7 +13,7 @@ namespace dotnet_exam2.Src.Repositories
         private readonly DataContext _dataContext = dataContext;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<UserResponseDto> CreateUserAsync(UserCreateDto userDto)
+        public async Task<UserDto> CreateUserAsync(CreateUserDto userDto)
         {
             var gender =
                 await _dataContext.Genders.FirstOrDefaultAsync(g => g.Id == userDto.GenderId)
@@ -44,7 +44,7 @@ namespace dotnet_exam2.Src.Repositories
             await _dataContext.Users.AddAsync(user);
             await _dataContext.SaveChangesAsync();
 
-            return new UserResponseDto
+            return new UserDto
             {
                 Id = user.Id,
                 Name = user.Name,
@@ -54,20 +54,20 @@ namespace dotnet_exam2.Src.Repositories
             };
         }
 
-        public async Task<IEnumerable<UserResponseDto>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
             return await _dataContext
                 .Users.Include(u => u.Gender)
                 .OrderBy(u => u.Name)
-                .ProjectTo<UserResponseDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
-        public async Task<UserResponseDto?> GetUserByIdAsync(int id)
+        public async Task<UserDto?> GetUserByIdAsync(int id)
         {
             return await _dataContext
                 .Users.Include(u => u.Gender)
-                .ProjectTo<UserResponseDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
     }
