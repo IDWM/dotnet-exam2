@@ -3,7 +3,7 @@ using dotnet_exam2.Src.Validators;
 
 namespace dotnet_exam2.Src.DTOs
 {
-    public class UserCreateDto
+    public class CreateUserDto
     {
         [Required(ErrorMessage = "El nombre es requerido.")]
         [StringLength(
