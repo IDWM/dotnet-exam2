@@ -1,14 +1,22 @@
 using dotnet_exam2.Src.Data;
+using dotnet_exam2.Src.Interfaces;
+using dotnet_exam2.Src.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+builder.Services.AddCors();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlite("Data Source=app.db");
 });
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
+
+app.MapControllers();
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 using (var scope = app.Services.CreateScope())
 {
