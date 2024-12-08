@@ -8,9 +8,9 @@ namespace dotnet_exam2.Src.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<UserCreateDto, User>();
+            CreateMap<CreateUserDto, User>();
 
-            CreateMap<User, UserResponseDto>();
+            CreateMap<User, UserDto>();
 
             CreateMap<Gender, GenderDto>();
         }
